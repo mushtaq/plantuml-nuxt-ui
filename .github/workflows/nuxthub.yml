@@ -35,5 +35,3 @@ jobs:
         id: deploy
         with:
           project-key: plantuml-nuxt-u-i32h
-          directory: .output
-          
