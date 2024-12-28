@@ -56,9 +56,7 @@ function handleStepChange(direction: 'previous' | 'next') {
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <UCard class="bg-gray-50 dark:bg-gray-900">
-        <pre class="text-sm overflow-x-auto font-mono text-gray-900 dark:text-gray-100">
-          <code>{{ step.puml }}</code>
-        </pre>
+        <pre class="text-sm overflow-x-auto font-mono text-gray-900 dark:text-gray-100 whitespace-pre"><code>{{step.puml.split('\n').map(line => line.trimStart()).join('\n')}}</code></pre>
       </UCard>
       <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
         <img
