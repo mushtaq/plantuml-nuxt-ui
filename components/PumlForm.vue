@@ -11,12 +11,6 @@ interface Emits {
   (e: 'error', error: string): void
 }
 
-interface ApiResponse {
-  steps?: Step[]
-  originalPuml?: string
-  error?: string
-}
-
 const props = withDefaults(defineProps<Props>(), {
   initialValue: ''
 })
@@ -29,7 +23,11 @@ async function handleSubmit() {
   isSubmitting.value = true
 
   try {
-    const response = await $fetch<ApiResponse>('/api/puml', {
+    const response = await $fetch<{
+      steps?: Step[]
+      originalPuml?: string
+      error?: string
+    }>('/api/puml', {
       method: 'POST',
       body: { puml: value.value }
     })
@@ -60,6 +58,8 @@ async function handleSubmit() {
         placeholder="Paste your PlantUML code here..."
         :rows="10"
         class="font-mono"
+        variant="outline"
+        color="gray"
         required
       />
     </UFormGroup>

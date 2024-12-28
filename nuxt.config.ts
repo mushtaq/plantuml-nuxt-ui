@@ -5,5 +5,13 @@ export default defineNuxtConfig({
   modules: ['@nuxt/ui', '@nuxtjs/tailwindcss'],
   ui: {
     global: true
-  }
+  },
+  colorMode: {
+    classSuffix: '',
+    fallback: 'light',
+    storageKey: 'nuxt-color-mode',
+    preference: 'light',
+    dataValue: 'theme'
+  },
+  pages: false
 })

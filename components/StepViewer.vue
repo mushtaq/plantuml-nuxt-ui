@@ -29,10 +29,10 @@ function handleStepChange(direction: 'previous' | 'next') {
 </script>
 
 <template>
-  <UCard>
+  <UCard class="bg-white dark:bg-gray-800">
     <template #header>
       <div class="flex justify-between items-center">
-        <h2 class="text-xl font-semibold">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
           Step {{ stepNumber }} of {{ stepsLength }}
         </h2>
         <div class="space-x-2">
@@ -55,12 +55,12 @@ function handleStepChange(direction: 'previous' | 'next') {
     </template>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <UCard class="bg-gray-50">
-        <pre class="text-sm overflow-x-auto">
+      <UCard class="bg-gray-50 dark:bg-gray-900">
+        <pre class="text-sm overflow-x-auto font-mono text-gray-900 dark:text-gray-100">
           <code>{{ step.puml }}</code>
         </pre>
       </UCard>
-      <div>
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
         <img
           :src="step.image"
           :alt="`PlantUML diagram for step ${stepNumber}`"
