@@ -1,50 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { Step } from '~/utils/puml'
-
-interface Props {
+const props = withDefaults(defineProps<{
   initialValue?: string
-}
-
-interface Emits {
-  (e: 'success', data: { steps: Step[], originalPuml: string }): void
-  (e: 'error', error: string): void
-}
-
-const props = withDefaults(defineProps<Props>(), {
+}>(), {
   initialValue: ''
 })
 
-const emit = defineEmits<Emits>()
-const value = ref(props.initialValue)
-const isSubmitting = ref(false)
+const { handleSuccess, handleError } = usePumlState()
+const { isSubmitting, submit } = usePumlSubmit()
+const value = useModel(props, 'initialValue')
 
 async function handleSubmit() {
-  isSubmitting.value = true
-
   try {
-    const response = await $fetch<{
-      steps?: Step[]
-      originalPuml?: string
-      error?: string
-    }>('/api/puml', {
-      method: 'POST',
-      body: { puml: value.value }
-    })
-
-    if (response.error) {
-      emit('error', response.error)
-    } else if (response.steps && response.originalPuml) {
-      emit('success', {
-        steps: response.steps,
-        originalPuml: response.originalPuml
-      })
-    }
+    const result = await submit(value.value)
+    handleSuccess(result)
   } catch (error) {
     console.error('Error submitting form:', error)
-    emit('error', error instanceof Error ? error.message : 'An unexpected error occurred')
-  } finally {
-    isSubmitting.value = false
+    handleError(error instanceof Error ? error.message : 'An unexpected error occurred')
   }
 }
 </script>
@@ -67,7 +38,7 @@ async function handleSubmit() {
     <UButton
       type="submit"
       :loading="isSubmitting"
-      :disabled="isSubmitting"
+      :disabled="isSubmitting || !value"
       size="lg"
       block
     >

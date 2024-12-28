@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
 import type { Step } from '~/utils/puml'
 
 interface Props {
@@ -7,23 +6,23 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const currentStep = ref(0)
 const stepsLength = computed(() => props.steps.length)
-
-watch(() => stepsLength.value, (newLength) => {
-  if (newLength > 0 && currentStep.value >= newLength) {
-    currentStep.value = 0
-  }
-})
+const {
+  currentStep,
+  stepNumber,
+  isFirstStep,
+  isLastStep,
+  goToPrevious,
+  goToNext
+} = useStepState(stepsLength.value)
 
 const step = computed(() => props.steps[currentStep.value])
-const stepNumber = computed(() => currentStep.value + 1)
 
 function handleStepChange(direction: 'previous' | 'next') {
   if (direction === 'previous') {
-    currentStep.value = Math.max(0, currentStep.value - 1)
+    goToPrevious()
   } else {
-    currentStep.value = Math.min(stepsLength.value - 1, currentStep.value + 1)
+    goToNext()
   }
 }
 </script>
@@ -40,14 +39,14 @@ function handleStepChange(direction: 'previous' | 'next') {
             icon="i-heroicons-arrow-left"
             color="gray"
             variant="ghost"
-            :disabled="currentStep === 0"
+            :disabled="isFirstStep"
             @click="handleStepChange('previous')"
           />
           <UButton
             icon="i-heroicons-arrow-right"
             color="gray"
             variant="ghost"
-            :disabled="currentStep === stepsLength - 1"
+            :disabled="isLastStep"
             @click="handleStepChange('next')"
           />
         </div>

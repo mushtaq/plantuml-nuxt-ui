@@ -1,28 +1,21 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import type { Step } from '~/utils/puml'
-
 const colorMode = useColorMode()
-const steps = ref<Step[]>()
-const error = ref<string>()
+const { steps, error, handleSuccess, handleError } = usePumlState()
 
 const themeIcon = computed(() => 
   colorMode.value === 'dark' ? 'i-heroicons-sun' : 'i-heroicons-moon'
 )
 
-function handleSuccess(data: { steps: Step[], originalPuml: string }) {
-  steps.value = data.steps
-  error.value = undefined
-}
-
-function handleError(errorMessage: string) {
-  error.value = errorMessage
-  steps.value = undefined
-}
-
 function toggleColorMode() {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
+
+useHead({
+  title: 'PlantUML Step Viewer',
+  meta: [
+    { name: 'description', content: 'Interactive PlantUML diagram viewer with step-by-step visualization' }
+  ]
+})
 </script>
 
 <template>
@@ -56,7 +49,7 @@ function toggleColorMode() {
       />
 
       <StepViewer
-        v-if="steps && steps.length > 0"
+        v-if="steps.length > 0"
         :steps="steps"
       />
     </UContainer>
