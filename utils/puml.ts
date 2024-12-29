@@ -1,4 +1,4 @@
-import { encode } from 'plantuml-encoder'
+import { encode } from './plantuml-encoder'
 
 export interface Step {
   puml: string
