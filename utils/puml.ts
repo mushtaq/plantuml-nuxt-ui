@@ -57,7 +57,7 @@ export function processPumlSteps(pumlText: string): Step[] {
         const encoded = encode(fullPuml)
         steps.push({
           puml: displayPuml,
-          image: `https://www.plantuml.com/plantuml/png/~1${encoded}`,
+          image: `https://www.plantuml.com/plantuml/svg/~1${encoded}`,
         })
         
         currentStep = ""
