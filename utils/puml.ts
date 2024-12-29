@@ -31,6 +31,7 @@ skinparam sequence {
 export function processPumlSteps(pumlText: string): Step[] {
   const steps: Step[] = []
   let baseDefinitions = ""
+  let accumulatedSteps = ""
   let currentStep = ""
   let inStep = false
   let inBaseDefinitions = true
@@ -51,8 +52,9 @@ export function processPumlSteps(pumlText: string): Step[] {
 
     if (line.trim().startsWith("' [/step")) {
       if (inStep) {
-        const displayPuml = `@startuml\n${baseDefinitions}${currentStep}\n@enduml`
-        const fullPuml = `@startuml\n${PLANTUML_STYLE}\n${baseDefinitions}${currentStep}\n@enduml`
+        accumulatedSteps += currentStep
+        const displayPuml = `@startuml\n${baseDefinitions}${accumulatedSteps}\n@enduml`
+        const fullPuml = `@startuml\n${PLANTUML_STYLE}\n${baseDefinitions}${accumulatedSteps}\n@enduml`
         
         const encoded = encode(fullPuml)
         steps.push({
